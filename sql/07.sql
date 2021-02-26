@@ -7,8 +7,10 @@
  * You may choose whichever solution makes the most sense to you.
  */
 
-SELECT title
+SELECT distinct(title)
 FROM film
+INNER JOIN inventory
+USING (film_id)
 WHERE film_id NOT IN (
     SELECT film_id
     FROM inventory
@@ -26,27 +28,4 @@ WHERE film_id NOT IN (
     ORDER BY film_id
 )
 ORDER BY title;
-
-/*
-LEFT JOIN inventory
-USING (film_id)
-LEFT JOIN rental
-USING (inventory_id)
-WHERE inventory_id is null
-
-SELECT title
-FROM film
-LEFT JOIN inventory
-USING (film_id)
-WHERE inventory_id is null
-ORDER BY title;
-
-SELECT title
-FROM film
-WHERE film_id  NOT IN (
-    SELECT film_id
-    FROM inventory
-)
-ORDER BY title;
-*/
 

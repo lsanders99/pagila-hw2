@@ -10,15 +10,19 @@
 -- how many times have each movie been rented?
 
 -- How many times has customer 1 rented each movie?
-SELECT film_id, title, count(*)
-FROM film
-INNER JOIN inventory
-USING (film_id)
-INNER JOIN rental
-USING (inventory_id)
-INNER JOIN customer
-USING (customer_id)
-WHERE customer_id = 1 --AND count(*) > 1
-GROUP BY film_id, title
-ORDER BY count(*) DESC;
+SELECT title
+FROM (SELECT film_id, title, count(*) AS rental_times
+    FROM film
+    INNER JOIN inventory
+    USING (film_id)
+    INNER JOIN rental
+    USING (inventory_id)
+    INNER JOIN customer
+    USING (customer_id)
+    WHERE customer_id = 1 --AND count(*) > 1
+    GROUP BY film_id, title
+    ORDER BY count(*) DESC
+) AS f
+WHERE rental_times > 1
+ORDER BY title;
 
